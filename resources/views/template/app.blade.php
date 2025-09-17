@@ -46,12 +46,37 @@
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor/css/pages/cards-statistics.css') }}" />
 
+    @if (isset($header_data))
+        @php
+            $version = date('YmdH');
+            // $version = str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz');
+        @endphp
+        @foreach ($header_data as $key => $v_head)
+            @php
+                $data_key = explode('-', $key);
+            @endphp
+            @if ($data_key[0] == 'css')
+                <link rel="stylesheet" href="{{ $v_head }}?v={{ $version }}">
+            @endif
+        @endforeach
+    @endif
+
+    @if (isset($static_header_data))
+        @foreach ($static_header_data as $key => $v_head)
+            @php
+                $data_key = explode('-', $key);
+            @endphp
+            @if ($data_key[0] == 'css')
+                <link rel="stylesheet" href="{{ $v_head }}">
+            @endif
+        @endforeach
+    @endif
     <!-- Helpers -->
     <script src="{{ asset('assets/assets/vendor/js/helpers.js') }}"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js. -->
-    <script src="{{ asset('assets/assets/vendor/js/template-customizer.js') }}"></script>
+    {{-- <script src="{{ asset('assets/assets/vendor/js/template-customizer.js') }}"></script> --}}
 
     <!--? Config: Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file. -->
 
@@ -1239,34 +1264,7 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="row g-6">
-                            <!-- Gamification Card -->
-                            <div class="col-md-12 col-xxl-8">
-                                <div class="card">
-                                    <div class="d-flex align-items-end row">
-                                        <div class="col-md-6 order-2 order-md-1">
-                                            <div class="card-body">
-                                                <h4 class="card-title mb-4">Congratulations <span
-                                                        class="fw-bold">John!</span> 🎉</h4>
-                                                <p class="mb-0">You have done 68% 😎 more sales today.</p>
-                                                <p>Check your new badge in your profile.</p>
-                                                <a href="javascript:;" class="btn btn-primary">View Profile</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 text-center text-md-end order-1 order-md-2">
-                                            <div class="card-body pb-0 px-0 pt-2">
-                                                <img src="../../assets/img/illustrations/illustration-john-light.png"
-                                                    height="186" class="scaleX-n1-rtl" alt="View Profile"
-                                                    data-app-light-img="illustrations/illustration-john-light.png"
-                                                    data-app-dark-img="illustrations/illustration-john-dark.png" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--/ Gamification Card -->
-
-                        </div>
+                        {!! isset($view_file) ? $view_file : '' !!}
                     </div>
                     <!-- / Content -->
 
@@ -1339,8 +1337,31 @@
 
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
 
-    <!-- Page JS -->
-    <script src="{{ asset('assets/assets/js/dashboards-analytics.js') }}"></script>
+
+    @if (isset($header_data))
+        @php
+            $version = str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz');
+        @endphp
+        @foreach ($header_data as $key => $v_head)
+            @php
+                $data_key = explode('-', $key);
+            @endphp
+            @if ($data_key[0] == 'js')
+                <script src="{{ $v_head }}?v={{ $version }}"></script>
+            @endif
+        @endforeach
+    @endif
+
+    @if (isset($static_header_data))
+        @foreach ($static_header_data as $key => $v_head)
+            @php
+                $data_key = explode('-', $key);
+            @endphp
+            @if ($data_key[0] == 'js')
+                <script src="{{ $v_head }}"></script>
+            @endif
+        @endforeach
+    @endif
 </body>
 
 </html>

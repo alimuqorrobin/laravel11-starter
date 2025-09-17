@@ -459,6 +459,7 @@ function isMacOS() {
 
 // Load search data
 function loadSearchData() {
+  /*
   const searchJson = $('#layout-menu').hasClass('menu-horizontal') ? 'search-horizontal.json' : 'search-vertical.json';
 
   fetch(assetsPath + 'json/' + searchJson)
@@ -471,6 +472,7 @@ function loadSearchData() {
       initializeAutocomplete();
     })
     .catch(error => console.error('Error loading JSON:', error));
+*/
 }
 
 // Initialize autocomplete
