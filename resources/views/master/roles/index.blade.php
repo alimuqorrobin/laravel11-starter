@@ -14,10 +14,19 @@
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <a href="{{ route('roles.export.csv') }}" class="btn btn-success btn-sm"><span class="icon-base ri ri-file-3-fill icon-20px me-4"></span>Export CSV</a>
-                    <a href="{{ route('roles.export.excel') }}" class="btn btn-primary btn-sm"><span class="icon-base ri ri-file-excel-2-fill icon-20px me-4"></span>Export Excel</a>
+                    <a href="{{ route('roles.export.csv') }}" class="btn btn-success btn-sm"><span
+                            class="icon-base ri ri-file-3-fill icon-20px me-4"></span>Export CSV</a>
+                    <a href="{{ route('roles.export.excel') }}" class="btn btn-primary btn-sm"><span
+                            class="icon-base ri ri-file-excel-2-fill icon-20px me-4"></span>Export Excel</a>
                 </div>
-                {!! $datatable !!}
+                <div class="mb-3">
+                    <select class="form-select w-25" data-filter="status">
+                        <option value="">-- Semua Status --</option>
+                        <option value="active">Aktif</option>
+                        <option value="inactive">Nonaktif</option>
+                    </select>
+                </div>
+                @datatable($datatableConfig)
             </div>
         </div>
     </div>

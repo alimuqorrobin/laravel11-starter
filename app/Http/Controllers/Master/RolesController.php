@@ -19,27 +19,21 @@ class RolesController extends Controller
 
     public function index()
     {
-        $datatableConfig = DataTableHelper::render([
-            'route' => route('roles.fetch'),
+        $datatableConfig = [
+            'id'          => 'rolesTable',
+            'routeFetch' => route('roles.fetch'),
+            'routeExport' => route('roles.export.csv'),
             'columns' => [
                 ['field' => 'id', 'label' => 'ID'],
                 ['field' => 'name', 'label' => 'Roles'],
                 ['field' => 'description', 'label' => 'Keterangan'],
                 ['field' => 'action', 'label' => 'Action'],
             ],
-            'searchable' => ['name', 'description'],
-            'defaultOrder' => ['id' => 'desc'],
-            'customColumns' => [
-                // Bisa pakai view Blade
-                // 'action' => view('partials.datatable_action')->render(),
-                // Bisa langsung HTML
-                'action' => '<button class="btn btn-sm btn-warning" data-id="{id}">Edit</button> 
-                             <button class="btn btn-sm btn-danger" data-id="{id}">Delete</button>',
-                'id' => '<input type="checkbox">'
-            ],
-            'perPage' => 10 
-        ]);
-        $data['datatable'] = $datatableConfig;
+            'defaultOrder' => ['col' => 'id', 'dir' => 'desc'],
+            'perPage' => 10
+        ];
+
+        $data['datatableConfig'] = $datatableConfig;
         $view = view('master.roles.index', $data);
         $put['view_file'] = $view;
         $put['header_data'] = $this->getHeaderCss();
@@ -52,32 +46,40 @@ class RolesController extends Controller
             ->select([
                 'roles.*'
             ]);
-
-        // search
-        if ($search = $request->input('search')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('roles.name', 'like', "%$search%")
-                    ->orWhere('roles.description', 'like', "%$search%");
-                //   ->orWhere('roles.name', 'like', "%$search%");
+        // filter search
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->search}%")
+                    ->orWhere('description', 'like', "%{$request->search}%");
             });
         }
 
-        // order
-        if ($order = $request->input('order')) {
-            foreach ($order as $field => $dir) {
-                $query->orderBy($field, $dir);
+        // contoh filter custom
+        // if ($request->role) {
+        //     $query->where('role', $request->role);
+        // }
+
+        // // ordering
+        // if ($request->orderCol) {
+        //     $query->orderBy($request->orderCol, $request->orderDir ?? 'asc');
+        // }
+
+        // multi order
+        if ($request->orderBy) {
+            foreach ($request->orderBy as $order) {
+                $query->orderBy($order['col'], $order['dir']);
             }
         }
+        $perPage = $request->perPage ?? 10;
+        $page    = $request->page ?? 1;
 
-        $perPage = $request->input('perPage', 10);
-        $page = $request->input('page', 1);
-        $total = $query->count();
-        $data = $query->forPage($page, $perPage)->get();
+        $paginator = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
-            'data' => $data,
-            'total' => $total,
-            'page' => $page
+            'data'        => $paginator->items(),
+            'total'       => $paginator->total(),
+            'currentPage' => $paginator->currentPage(),
+            'lastPage'    => $paginator->lastPage(),
         ]);
     }
 
