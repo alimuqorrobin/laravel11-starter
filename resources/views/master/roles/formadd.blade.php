@@ -22,7 +22,10 @@
                     </div>
                     <div class="row justify-content-end">
                         <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Send</button>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                              <button type="button" class="btn btn-primary waves-effect waves-light"><span class="icon-base ri ri-save-2-fill icon-22px"></span> Simpan</button>
+                              <button type="button" onclick="Roles.homePage()" class="btn btn-warning waves-effect waves-light"><span class="icon-base ri ri-arrow-go-back-fill icon-22px"></span> Kembali</button>
+                            </div>
                         </div>
                     </div>
                 </form>

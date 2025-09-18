@@ -22,14 +22,17 @@ class RolesController extends Controller
         $datatableConfig = [
             'id'          => 'rolesTable',
             'routeFetch' => route('roles.fetch'),
-            'routeExport' => route('roles.export.csv'),
+            'routeExport' => route('roles.export'),
             'columns' => [
-                ['field' => 'id', 'label' => 'ID'],
-                ['field' => 'name', 'label' => 'Roles'],
-                ['field' => 'description', 'label' => 'Keterangan'],
-                ['field' => 'action', 'label' => 'Action'],
+                ['field' => 'id', 'title' => 'ID'],
+                ['field' => 'name', 'title' => 'Roles'],
+                ['field' => 'description', 'title' => 'Keterangan'],
+                ['field' => 'action', 'title' => 'Action'],
             ],
-            'defaultOrder' => ['col' => 'id', 'dir' => 'desc'],
+            'defaultOrder' => [
+                ['col' => 'id', 'dir' => 'desc'],
+                ['col' => 'name', 'dir' => 'asc']
+            ],
             'perPage' => 10
         ];
 
@@ -40,6 +43,13 @@ class RolesController extends Controller
         return view('template.app', $put);
     }
 
+    public function add(){
+        $data['test'] ="eefefe";
+        $view = view('master.roles.formadd', $data);
+        $put['view_file'] = $view;
+        $put['header_data'] = $this->getHeaderCss();
+        return view('template.app', $put);
+    }
     public function fetch(Request $request)
     {
         $query = Role::query()
@@ -71,19 +81,23 @@ class RolesController extends Controller
             }
         }
         $perPage = $request->perPage ?? 10;
-        $page    = $request->page ?? 1;
-
-        $paginator = $query->paginate($perPage, ['*'], 'page', $page);
-
-        return response()->json([
-            'data'        => $paginator->items(),
-            'total'       => $paginator->total(),
-            'currentPage' => $paginator->currentPage(),
-            'lastPage'    => $paginator->lastPage(),
-        ]);
+        $data = $query->paginate($perPage);
+        $data->getCollection()->transform(function ($item) {
+            $item->action = '<button type="button" class="btn btn-icon  btn-fab demo waves-effect"><span class="icon-base ri ri-delete-bin-4-fill icon-22px"></span></button>&nbsp;&nbsp;<button type="button" class="btn btn-icon  btn-fab demo waves-effect"><span class="icon-base ri ri-edit-box-fill icon-22px"></span></button>';
+            return $item;
+        });
+        return response()->json($data);
     }
 
-    public function exportCsv(Request $request): StreamedResponse
+    public function export(Request $request){
+        if ($request->type == 'csv') {
+            $this->exportCsv($request);
+        }else{
+            $this->exportExcel($request);
+        }
+    }
+
+    function exportCsv(Request $request): StreamedResponse
     {
         $query = Role::query()
             ->select([
@@ -110,7 +124,7 @@ class RolesController extends Controller
         return response()->streamDownload($callback, 'users.csv');
     }
 
-    public function exportExcel(Request $request)
+    function exportExcel(Request $request)
     {
         $query = Role::query()
             ->select([
@@ -137,4 +151,6 @@ class RolesController extends Controller
 
         return response()->streamDownload($callback, 'users.xls');
     }
+
+
 }

@@ -37,6 +37,8 @@
     <!-- Vendors CSS -->
 
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/animate-css/animate.css')  }}" />
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
 
     <!-- endbuild -->
 
@@ -76,7 +78,7 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js. -->
-    {{-- <script src="{{ asset('assets/assets/vendor/js/template-customizer.js') }}"></script> --}}
+    <script src="{{ asset('assets/assets/vendor/js/template-customizer.js') }}"></script>
 
     <!--? Config: Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file. -->
 
@@ -1330,14 +1332,14 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-    <script src="{{ asset('assets/assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
-    <script src="{{ asset('assets/assets/vendor/libs/swiper/swiper.js') }}"></script>
-
+    <script src="{{ asset('assets/assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
     <!-- Main JS -->
 
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
 
-
+    <!-- MY CUSTOM DATATBLES -->
+    <script src="{{ asset('assets/assets/js/core/mydatatable.js') }}"></script>
+    @routes
     @if (isset($header_data))
         @php
             $version = str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz');
@@ -1363,5 +1365,4 @@
         @endforeach
     @endif
 </body>
-
 </html>

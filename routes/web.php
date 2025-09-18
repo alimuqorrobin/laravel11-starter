@@ -12,7 +12,7 @@ Route::get('/', function () {
 // Route::get('/datatable/export/{type}', [App\Http\Controllers\DataTableController::class, 'export']);
 Route::prefix('roles')->name('roles.')->controller(RolesController::class)->group(function () {
     Route::get('/', 'index')->name('index');
+    Route::get('/add', 'add')->name('add');
     Route::post('/fetch', 'fetch')->name('fetch');
-    Route::get('/export/csv', 'exportCsv')->name('export.csv');
-    Route::get('/export/excel', 'exportExcel')->name('export.excel');
+    Route::get('/export', 'exportCsv')->name('export');
 });

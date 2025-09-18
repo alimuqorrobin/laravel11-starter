@@ -1,6 +1,6 @@
 <div class="row mb-3">
     <div class="col-xxl">
-        <button type="button" class="btn btn-primary waves-effect waves-light"><span
+        <button onclick="Roles.addData()" type="button" class="btn btn-primary waves-effect waves-light"><span
                 class="icon-base ri ri-sticky-note-add-fill icon-20px me-4"></span>Tambah</button>
     </div>
 </div>
@@ -14,19 +14,13 @@
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <a href="{{ route('roles.export.csv') }}" class="btn btn-success btn-sm"><span
-                            class="icon-base ri ri-file-3-fill icon-20px me-4"></span>Export CSV</a>
-                    <a href="{{ route('roles.export.excel') }}" class="btn btn-primary btn-sm"><span
-                            class="icon-base ri ri-file-excel-2-fill icon-20px me-4"></span>Export Excel</a>
-                </div>
-                <div class="mb-3">
                     <select class="form-select w-25" data-filter="status">
                         <option value="">-- Semua Status --</option>
                         <option value="active">Aktif</option>
                         <option value="inactive">Nonaktif</option>
                     </select>
                 </div>
-                @datatable($datatableConfig)
+                {!! \App\Helpers\DataTableHelper::render($datatableConfig) !!}
             </div>
         </div>
     </div>
