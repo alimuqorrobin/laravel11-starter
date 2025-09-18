@@ -1337,8 +1337,11 @@
 
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
 
-    <!-- MY CUSTOM DATATBLES -->
+    <!-- MY CUSTOM JS -->
     <script src="{{ asset('assets/assets/js/core/mydatatable.js') }}"></script>
+    <script src="{{ asset('assets/assets/js/core/messagedialog.js') }}"></script>
+    <script src="{{ asset('assets/assets/js/core/httprequestcustom.js') }}"></script>
+    
     @routes
     @if (isset($header_data))
         @php
