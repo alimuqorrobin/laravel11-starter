@@ -5,8 +5,11 @@ namespace App\Models\Own;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 class Role extends Model {
+    Use LogsActivity;
+    protected static $logAttributes  = ['name','description'];
     protected $fillable = ['name','description'];
 
     public function users() {
@@ -25,5 +28,16 @@ class Role extends Model {
         if (! $perm) return false;
         $col = 'can_' . $permission;
         return (bool) $perm->pivot->{$col};
+    }
+
+     /**
+     * Konfigurasi activity log
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'description']) // field yang dicatat
+            ->useLogName('role')               // nama log khusus
+            ->setDescriptionForEvent(fn(string $eventName) => "Role model has been {$eventName}");
     }
 }

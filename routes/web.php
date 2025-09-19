@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Master\RolesController;
 use Illuminate\Support\Facades\Route;
+// use Opcodes\LogViewer\Facades\LogViewer;
 
 Route::get('/', function () {
     // return view('welcome');
@@ -16,3 +17,9 @@ Route::prefix('roles')->name('roles.')->controller(RolesController::class)->grou
     Route::post('/fetch', 'fetch')->name('fetch');
     Route::get('/export', 'exportCsv')->name('export');
 });
+
+// Route::middleware(['auth']) // kasih auth biar aman
+//     ->prefix('log-viewer')
+//     ->group(function () {
+//         LogViewer::routes();
+//     });

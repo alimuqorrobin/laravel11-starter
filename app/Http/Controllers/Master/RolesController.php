@@ -50,6 +50,11 @@ class RolesController extends Controller
         $put['header_data'] = $this->getHeaderCss();
         return view('template.app', $put);
     }
+
+    public function saveData(Request $request){
+        
+    }
+
     public function fetch(Request $request)
     {
         $query = Role::query()

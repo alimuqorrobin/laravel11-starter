@@ -1,7 +1,7 @@
 <!doctype html>
 
 <html lang="en" class="layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr" data-skin="default"
-    data-bs-theme="light" data-assets-path="../../assets/" data-template="vertical-menu-template">
+    data-bs-theme="light" data-assets-path="{{ asset('assets/assets') }}/" data-template="vertical-menu-template">
 
 <head>
     <meta charset="utf-8" />
@@ -14,7 +14,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/assets/img/favicon/favicon.ico') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -37,12 +37,16 @@
     <!-- Vendors CSS -->
 
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/animate-css/animate.css')  }}" />
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/animate-css/animate.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
-
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/bootstrap-select/bootstrap-select.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/tagify/tagify.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/@form-validation/form-validation.css') }}" />
     <!-- endbuild -->
 
-    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/apex-charts/apex-charts.css')  }}" />
+    <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/assets/vendor/libs/swiper/swiper.css') }}" />
 
     <!-- Page CSS -->
@@ -544,8 +548,7 @@
                         </a>
                     </div>
 
-                    <div class="navbar-nav-right d-flex align-items-center justify-content-end"
-                        id="navbar-collapse">
+                    <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
                         <!-- Search -->
                         <div class="navbar-nav align-items-center">
                             <div class="nav-item navbar-search-wrapper mb-0">
@@ -595,8 +598,8 @@
                             <!-- Notification -->
                             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-4 me-xl-1">
                                 <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
-                                    href="javascript:void(0);" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" aria-expanded="false">
+                                    href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                                    aria-expanded="false">
                                     <i class="icon-base ri ri-notification-2-line icon-22px"></i>
                                     <span
                                         class="position-absolute top-0 start-50 translate-middle-y badge badge-dot bg-danger mt-2 border"></span>
@@ -873,8 +876,8 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0 me-2">
                                                     <div class="avatar avatar-online">
-                                                        <img src="{{ asset('assets/assets/img/avatars/1.png') }}" alt="alt"
-                                                            class="w-px-40 h-auto rounded-circle" />
+                                                        <img src="{{ asset('assets/assets/img/avatars/1.png') }}"
+                                                            alt="alt" class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
@@ -967,7 +970,7 @@
                                         class="footer-link fw-medium">Pixinvent</a>
                                 </div>
                                 <div class="d-none d-lg-inline-block">
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -994,12 +997,52 @@
     <!-- build:js assets/vendor/js/theme.js  -->
 
     <script src="{{ asset('assets/assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script>
+        // Tempat nyimpen semua instance validator
+        const FormValidators = {};
 
-    <script src="{{ asset('assets/assets/vendor/libs/popper/popper.js')  }}"></script>
+        /**
+         * Init form validation secara global
+         * @param {Array} configs - daftar konfigurasi form
+         */
+        function initFormValidationGlobal(configs) {
+            configs.forEach(cfg => {
+                if (FormValidators[cfg.key]) {
+                    FormValidators[cfg.key].destroy();
+                }
+                FormValidators[cfg.key] = setupValidation(
+                    cfg.formId,
+                    cfg.rules,
+                    cfg.onSuccess,
+                    cfg.rowSelector || '.mb-3' // default kalau tidak diisi
+                );
+            });
+        }
+
+        /**
+         * Submit form secara global
+         * @param {string} key - nama unik form (misal 'roles-add')
+         * @param {Function} onValid - callback jika valid
+         */
+        function submitFormValidation(key, onValid) {
+            if (!FormValidators[key]) {
+                console.warn(`Validator untuk ${key} belum di-init`);
+                return;
+            }
+            FormValidators[key].validate().then(status => {
+                if (status === 'Valid') {
+                    if (typeof onValid === 'function') {
+                        onValid();
+                    }
+                }
+            });
+        }
+    </script>
+    <script src="{{ asset('assets/assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('assets/assets/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('assets/assets/vendor/libs/node-waves/node-waves.js') }}"></script>
 
-    <script src="{{ asset('assets/assets/vendor/libs/@algolia/autocomplete-js.js')  }}"></script>
+    <script src="{{ asset('assets/assets/vendor/libs/@algolia/autocomplete-js.js') }}"></script>
 
     <script src="{{ asset('assets/assets/vendor/libs/pickr/pickr.js') }}"></script>
 
@@ -1015,15 +1058,24 @@
 
     <!-- Vendors JS -->
     <script src="{{ asset('assets/assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
-    <!-- Main JS -->
+    <script src="{{ asset('assets/assets/vendor/libs/select2/select2.js') }}"></script>
+    <script src="{{ asset('assets/assets/vendor/libs/bootstrap-select/bootstrap-select.js') }}"></script>
+    <script src="{{ asset('assets/assets/vendor/libs/moment/moment.js') }}"></script>
+    <script src="{{ asset('assets/assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+    <script src="{{ asset('assets/assets/vendor/libs/tagify/tagify.js') }}"></script>
+    <script src="{{ asset('assets/assets/vendor/libs/@form-validation/popular.js') }}"></script>
+    <script src="{{ asset('assets/assets/vendor/libs/@form-validation/bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/assets/vendor/libs/@form-validation/auto-focus.js') }}"></script>
 
+    <!-- Main JS -->
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
 
     <!-- MY CUSTOM JS -->
     <script src="{{ asset('assets/assets/js/core/mydatatable.js') }}"></script>
     <script src="{{ asset('assets/assets/js/core/messagedialog.js') }}"></script>
     <script src="{{ asset('assets/assets/js/core/httprequestcustom.js') }}"></script>
-    
+    <script src="{{ asset('assets/assets/js/core/form-validation-helper.js') }}"></script>
+
     @routes
     @if (isset($header_data))
         @php
@@ -1050,4 +1102,5 @@
         @endforeach
     @endif
 </body>
+
 </html>

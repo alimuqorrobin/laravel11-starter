@@ -7,7 +7,10 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",
+        "laravel/telescope": "^5.11",
         "laravel/tinker": "^2.9",
+        "opcodesio/log-viewer": "*",
+        "spatie/laravel-activitylog": "^4.10",
         "tightenco/ziggy": "^2.6"
     },
     "require-dev": {
