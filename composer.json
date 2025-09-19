@@ -30,7 +30,8 @@
         },
         "files": [
             "app/Helpers/permission_helper.php",
-            "app/Helpers/datatable_helper.php"
+            "app/Helpers/datatable_helper.php",
+            "app/Helpers/TransactionHelper.php"
         ]
     },
     "autoload-dev": {

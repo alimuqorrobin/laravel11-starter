@@ -1,7 +1,8 @@
 window.Laravel = {
     routes: {
         baseUrlPage: route('roles.index'),
-        addData: route('roles.add')
+        addData: route('roles.add'),
+        saveData: route('roles.save')
     }
 }
 let Roles = {
@@ -31,8 +32,18 @@ let Roles = {
     },
     submitData: () => {
         submitFormValidation('roles-submit', () => {
-            alert('lolos')
-        })
+            let params = {}
+            params.roles = $("#txt-roles-name").val()
+            params.keterangan = $("#txt-keterangan").val()
+            const url_save = Laravel.routes.saveData
+            const postData = AjaxProcess.ajaxRequest(url_save,params,'POST',function(response){
+                if(response.is_valid){
+                    MessageDialog.showSuccess('Data Succesfully Saved');
+                }else{
+                    MessageDialog.showError(response.message);
+                }
+            });
+        });
     }
 }
 

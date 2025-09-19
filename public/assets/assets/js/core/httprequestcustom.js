@@ -27,26 +27,19 @@ let AjaxProcess = {
 
         $.ajax({
             url: url,
-            type: method,
-            data: data,
-             headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name=csrf-token]').content
+            type: typeof method === 'string' ? method.toUpperCase() : 'POST',
+            data: JSON.stringify(data), // stringify data
+            contentType: 'application/json', // biarkan server tahu ini JSON
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')
+                    .content
             },
-            success: function (response, status, xhr) {
+            success: function (response) {
                 Swal.close()
-
-                // cek apakah response JSON atau bukan
                 if (typeof response === 'object') {
-                    // Sudah JSON (karena otomatis parse jika pakai dataType:'json')
-                    if (callback && typeof callback === 'function') {
-                        callback(response)
-                    }
+                    callback?.(response)
                 } else if (AjaxProcess.isJsonString(response)) {
-                    let res = JSON.parse(response)
-                    if (callback && typeof callback === 'function') {
-                        callback(res)
-                    }
+                    callback?.(JSON.parse(response))
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -60,7 +53,9 @@ let AjaxProcess = {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    html: `<div style="max-height:400px; overflow:auto; text-align:left;">${xhr.responseText || error}</div>`,
+                    html: `<div style="max-height:400px; overflow:auto; text-align:left;">${
+                        xhr.responseText || error
+                    }</div>`,
                     width: '80%'
                 })
             }
@@ -94,8 +89,9 @@ let AjaxProcess = {
             processData: false,
             contentType: false,
             headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name=csrf-token]').content
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')
+                    .content
             },
             success: function (response, status, xhr) {
                 Swal.close()
@@ -123,7 +119,9 @@ let AjaxProcess = {
                 Swal.fire({
                     icon: 'error',
                     title: 'Upload gagal',
-                    html: `<div style="max-height:400px; overflow:auto; text-align:left;">${xhr.responseText || error}</div>`,
+                    html: `<div style="max-height:400px; overflow:auto; text-align:left;">${
+                        xhr.responseText || error
+                    }</div>`,
                     width: '80%'
                 })
             }

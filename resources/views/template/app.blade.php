@@ -1000,7 +1000,7 @@
     <script>
         // Tempat nyimpen semua instance validator
         const FormValidators = {};
-
+        let isPageLoading = true;
         /**
          * Init form validation secara global
          * @param {Array} configs - daftar konfigurasi form
@@ -1076,6 +1076,40 @@
     <script src="{{ asset('assets/assets/js/core/httprequestcustom.js') }}"></script>
     <script src="{{ asset('assets/assets/js/core/form-validation-helper.js') }}"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: 'Memuat halaman...',
+                text: 'Mohon tunggu hingga semua proses selesai',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        });
+
+        // Tutup loading setelah semua resource (gambar, CSS, JS) selesai
+        window.addEventListener("load", function() {
+            isPageLoading = false;
+            Swal.close();
+        });
+
+        // Blok semua klik & keyboard selama halaman loading
+        document.addEventListener("click", function(e) {
+            if (isPageLoading) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        }, true);
+
+        document.addEventListener("keydown", function(e) {
+            if (isPageLoading) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        }, true);
+    </script>
     @routes
     @if (isset($header_data))
         @php

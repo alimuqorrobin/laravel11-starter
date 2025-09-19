@@ -52,7 +52,16 @@ class RolesController extends Controller
     }
 
     public function saveData(Request $request){
-        
+        $params = $request->all();
+
+        $saveData = multiDbTransaction(['mysql'],function($dbs) use($params){
+            $insert = new Role();
+            $insert->name = $params['roles'];
+            $insert->description111 = $params['keterangan'];
+            $insert->save();
+        });
+
+        return response()->json($saveData);
     }
 
     public function fetch(Request $request)
