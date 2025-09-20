@@ -65,9 +65,19 @@ class RolesController extends Controller
         return response()->json($saveData);
     }
 
+    public function edit(Request $request){
+        $id = AllInOneHelper::getInt($request,'id');
+        $dataEdit = Role::where('id',$id)->first();
+        $data['dataEdit'] = $dataEdit;
+        $view = view('master.roles.formedit', $data);
+        $put['view_file'] = $view;
+        $put['header_data'] = $this->getHeaderCss();
+        return view('template.app', $put);
+    }
+
     public function updateData(Request $request){
         $params = $request->all();
-
+       
     }
 
     public function fetch(Request $request)
@@ -103,7 +113,7 @@ class RolesController extends Controller
         $perPage = $request->perPage ?? 10;
         $data = $query->paginate($perPage);
         $data->getCollection()->transform(function ($item) {
-            $item->action = '<button type="button" class="btn btn-icon  btn-fab demo waves-effect"><span class="icon-base ri ri-delete-bin-4-fill icon-22px"></span></button>&nbsp;&nbsp;<button type="button" class="btn btn-icon  btn-fab demo waves-effect"><span class="icon-base ri ri-edit-box-fill icon-22px"></span></button>';
+            $item->action = '<button type="button" class="btn btn-icon  btn-fab demo waves-effect"><span class="icon-base ri ri-delete-bin-4-fill icon-22px"></span></button>&nbsp;&nbsp;<button type="button" class="btn btn-icon  btn-fab demo waves-effect" onclick="Roles.editPage(\'' . $item->id . '\')"><span class="icon-base ri ri-edit-box-fill icon-22px"></span></button>';
             return $item;
         });
         return response()->json($data);

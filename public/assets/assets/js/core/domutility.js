@@ -8,8 +8,39 @@ const DOMUtil = (() => {
         }
     };
 
+    const setSelect2Value = (el, value, multiple = false) => {
+        if (!el) return;
+        const $el = $(el);
+        if (!$el.hasClass('select2-hidden-accessible')) return;
+
+        // Jika remote AJAX, kita perlu membuat data dummy untuk ditampilkan
+        if ($el.data('select2') && $el.data('select2').options.options.ajax) {
+            if (!value) {
+                $el.val(null).trigger('change');
+                return;
+            }
+
+            const values = multiple ? value : [value];
+
+            // Cek option yang sudah ada, jika belum ada buat dummy
+            const currentOptions = $el.find('option').map((i, opt) => opt.value).get();
+            values.forEach(v => {
+                if (!currentOptions.includes(v.id ? v.id.toString() : v.toString())) {
+                    const newOption = new Option(v.text || v.id || v, v.id || v, true, true);
+                    $el.append(newOption).trigger('change');
+                }
+            });
+            $el.trigger({
+                type: 'select2:select',
+                params: { data: values }
+            });
+        } else {
+            // non-ajax
+            $el.val(value).trigger('change');
+        }
+    };
+
     return {
-        // Ambil value (single atau multiple)
         getValue: (selector) => {
             const el = getElement(selector);
             if (!el) return null;
@@ -29,7 +60,6 @@ const DOMUtil = (() => {
             return el.value;
         },
 
-        // Set value single atau multiple (obj: {selector: value})
         setValue: (selectorOrObj, value) => {
             if (typeof selectorOrObj === 'object') {
                 for (const key in selectorOrObj) {
@@ -42,23 +72,12 @@ const DOMUtil = (() => {
             if (!el) return;
 
             if (el instanceof HTMLCollection || el instanceof NodeList) {
-                Array.from(el).forEach(i => {
-                    if ($(i).hasClass('select2-hidden-accessible')) {
-                        $(i).val(value).trigger('change');
-                    } else {
-                        i.value = value;
-                    }
-                });
+                Array.from(el).forEach(i => setSelect2Value(i, value));
             } else {
-                if ($(el).hasClass('select2-hidden-accessible')) {
-                    $(el).val(value).trigger('change');
-                } else {
-                    el.value = value;
-                }
+                setSelect2Value(el, value);
             }
         },
 
-        // Disable / enable single atau multiple input
         setDisabled: (selectorOrArray, disabled = true) => {
             if (Array.isArray(selectorOrArray)) {
                 selectorOrArray.forEach(s => DOMUtil.setDisabled(s, disabled));
@@ -84,7 +103,6 @@ const DOMUtil = (() => {
             }
         },
 
-        // Clear semua input di form
         clearForm: (formSelector) => {
             const form = document.querySelector(formSelector);
             if (!form) return;
@@ -100,20 +118,17 @@ const DOMUtil = (() => {
             });
         },
 
-        // Inisialisasi Select2 (normal / remote AJAX) + dropdownParent otomatis
         initSelect2: (selector, options = {}) => {
             const el = $(selector);
             if (!el.length) return;
 
             let config = {
                 width: '100%',
-                // cari parent modal / dropdown / tab terdekat
                 dropdownParent: el.closest('.modal, .dropdown, .tab-pane').length ?
                                 el.closest('.modal, .dropdown, .tab-pane') : $(document.body),
                 ...options
             };
 
-            // jika remote AJAX
             if (options.ajax && options.url) {
                 config.ajax = {
                     url: options.url,
@@ -123,7 +138,7 @@ const DOMUtil = (() => {
                     data: function (params) {
                         return {
                             q: params.term,
-                            ...options.data // custom additional params
+                            ...options.data
                         };
                     },
                     processResults: function (data) {
@@ -134,12 +149,23 @@ const DOMUtil = (() => {
             }
 
             el.select2(config);
+        },
+
+        // --- FUNGSI BARU UNTUK AJAX REMOTE SELECT2 EDIT ---
+        setAjaxSelect2Value: (selector, data) => {
+            const el = getElement(selector);
+            setSelect2Value(el, data, Array.isArray(data));
         }
     };
 })();
 
-/* cara penggunaan 
+
+/* ===============================
+   DOMUtil Usage Cheat Sheet
+   =============================== */
+
 // --- Ambil / set value ---
+/*
 let name = DOMUtil.getValue('#nameInput');       // ambil by id
 let tags = DOMUtil.getValue('tags');             // ambil by name
 
@@ -149,6 +175,14 @@ DOMUtil.setValue({                               // set multiple
     'tags': 'javascript',
     '#email': 'ali@example.com'
 });
+
+// --- Set value untuk Select2 remote AJAX (edit data) ---
+DOMUtil.setAjaxSelect2Value('#category', { id: 5, text: 'Elektronik' });   // single
+DOMUtil.setAjaxSelect2Value('#tags', [                                       // multiple
+    { id: 1, text: 'JavaScript' },
+    { id: 3, text: 'PHP' },
+    { id: 5, text: 'Laravel' }
+]);
 
 // --- Disable / enable ---
 DOMUtil.setDisabled('#nameInput');             // disable
@@ -167,5 +201,12 @@ DOMUtil.initSelect2('#category', {
     type: 'POST',
     data: { extraParam: 123 },
     delay: 300
+});
+
+// --- Contoh lengkap: edit form dengan AJAX remote Select2 ---
+$.get('/api/order/123', function(order) {
+    DOMUtil.setValue('#nameInput', order.name);                   // single input
+    DOMUtil.setAjaxSelect2Value('#category', order.category);     // single Select2 AJAX
+    DOMUtil.setAjaxSelect2Value('#tags', order.tags);             // multiple Select2 AJAX
 });
 */

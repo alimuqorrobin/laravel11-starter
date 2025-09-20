@@ -14,6 +14,7 @@ Route::get('/', function () {
 Route::prefix('roles')->name('roles.')->controller(RolesController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/add', 'add')->name('add');
+    Route::get('/edit', 'edit')->name('edit');
     Route::post('/fetch', 'fetch')->name('fetch');
     Route::post('/save', 'saveData')->name('save');
     Route::get('/export', 'exportCsv')->name('export');
