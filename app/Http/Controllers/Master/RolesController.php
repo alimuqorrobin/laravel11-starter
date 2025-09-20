@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Helpers\AllInOneHelper;
 use App\Helpers\DataTableHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Own\Role;
@@ -56,12 +57,17 @@ class RolesController extends Controller
 
         $saveData = multiDbTransaction(['mysql'],function($dbs) use($params){
             $insert = new Role();
-            $insert->name = $params['roles'];
-            $insert->description111 = $params['keterangan'];
+            $insert->name = AllInOneHelper::sanitize($params['roles']);
+            $insert->description = AllInOneHelper::sanitize($params['keterangan']);
             $insert->save();
         });
 
         return response()->json($saveData);
+    }
+
+    public function updateData(Request $request){
+        $params = $request->all();
+
     }
 
     public function fetch(Request $request)

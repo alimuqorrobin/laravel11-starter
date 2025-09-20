@@ -9,6 +9,7 @@
         "laravel/framework": "^11.0",
         "laravel/telescope": "^5.11",
         "laravel/tinker": "^2.9",
+        "mews/purifier": "^3.4",
         "opcodesio/log-viewer": "*",
         "spatie/laravel-activitylog": "^4.10",
         "tightenco/ziggy": "^2.6"
@@ -31,7 +32,8 @@
         "files": [
             "app/Helpers/permission_helper.php",
             "app/Helpers/datatable_helper.php",
-            "app/Helpers/TransactionHelper.php"
+            "app/Helpers/TransactionHelper.php",
+            "app/Helpers/AllInOneHelper.php"
         ]
     },
     "autoload-dev": {

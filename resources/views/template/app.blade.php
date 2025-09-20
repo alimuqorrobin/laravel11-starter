@@ -625,7 +625,7 @@
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar">
-                                                            <img src="../../assets/img/avatars/1.png" alt="avatar"
+                                                            <img src="{{ asset('assets/assets/img/avatars/1.png') }}" alt="avatar"
                                                                 class="rounded-circle" />
                                                         </div>
                                                     </div>
@@ -675,7 +675,7 @@
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar">
-                                                            <img src="../../assets/img/avatars/2.png" alt="avatar"
+                                                            <img src="{{ asset('assets/assets/img/avatars/2.png') }}" alt="avatar"
                                                                 class="rounded-circle" />
                                                         </div>
                                                     </div>
@@ -726,7 +726,7 @@
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar">
-                                                            <img src="../../assets/img/avatars/9.png" alt="avatar"
+                                                            <img src="{{ asset('assets/assets/img/avatars/9.png') }}" alt="avatar"
                                                                 class="rounded-circle" />
                                                         </div>
                                                     </div>
@@ -777,7 +777,7 @@
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar">
-                                                            <img src="../../assets/img/avatars/5.png" alt="avatar"
+                                                            <img src="{{ asset('assets/assets/img/avatars/5.png') }}" alt="avatar"
                                                                 class="rounded-circle" />
                                                         </div>
                                                     </div>
@@ -802,7 +802,7 @@
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar">
-                                                            <img src="../../assets/img/avatars/6.png" alt="avatar"
+                                                            <img src="{{ asset('assets/assets/img/avatars/6.png') }}" alt="avatar"
                                                                 class="rounded-circle" />
                                                         </div>
                                                     </div>
@@ -1075,6 +1075,7 @@
     <script src="{{ asset('assets/assets/js/core/messagedialog.js') }}"></script>
     <script src="{{ asset('assets/assets/js/core/httprequestcustom.js') }}"></script>
     <script src="{{ asset('assets/assets/js/core/form-validation-helper.js') }}"></script>
+    <script src="{{ asset('assets/assets/js/core/domutility.js') }}"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

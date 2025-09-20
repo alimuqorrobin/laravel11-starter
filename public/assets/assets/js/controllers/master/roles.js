@@ -39,14 +39,18 @@ let Roles = {
             const postData = AjaxProcess.ajaxRequest(url_save,params,'POST',function(response){
                 if(response.is_valid){
                     MessageDialog.showSuccess('Data Succesfully Saved');
+                    DOMUtil.clearForm('#frm-rules');
                 }else{
                     MessageDialog.showError(response.message);
                 }
             });
         });
-    }
+    },
+    updateData:()=>{
+
+    },
 }
 
 $(function () {
-    Roles.initFormValidation()
+    Roles.initFormValidation();
 })
