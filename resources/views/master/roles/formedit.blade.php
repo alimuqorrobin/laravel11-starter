@@ -8,17 +8,18 @@
             </div>
             <div class="card-body">
                 <form id="frm-rules-edit">
+                    <input type="hidden" name="txt-id" id="txt-id" value="{{ $dataEdit->id }}">
                     <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="txt-roles-name-edit">Roles</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="txt-roles-name-edit" id="txt-roles-name-edit"
+                            <input type="text" value="{{ $dataEdit->name }}" class="form-control" name="txt-roles-name-edit" id="txt-roles-name-edit"
                                 placeholder="Roles" />
                         </div>
                     </div>
                     <div class="row mb-4">
                         <label class="col-sm-2 col-form-label" for="txt-keterangan-edit">Keterangan</label>
                         <div class="col-sm-10">
-                            <textarea name="txt-keterangan-edit" id="txt-keterangan-edit" class="form-control" placeholder="Keterangan"></textarea>
+                            <textarea  name="txt-keterangan-edit" id="txt-keterangan-edit" class="form-control" placeholder="Keterangan">{{ $dataEdit->description }}</textarea>
                         </div>
                     </div>
                     <div class="row justify-content-end">

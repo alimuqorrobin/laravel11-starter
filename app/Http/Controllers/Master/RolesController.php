@@ -75,9 +75,14 @@ class RolesController extends Controller
         return view('template.app', $put);
     }
 
-    public function updateData(Request $request){
-        $params = $request->all();
-       
+    public function update(Request $request){
+        $id     = AllInOneHelper::sanitize($request->id);
+        $name   = AllInOneHelper::sanitize($request->roles);
+        $description   = AllInOneHelper::sanitize($request->keterangan);
+
+        echo $id."\n";
+        echo $name."\n";
+        echo $description."\n";
     }
 
     public function fetch(Request $request)

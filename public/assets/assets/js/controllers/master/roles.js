@@ -3,7 +3,8 @@ window.Laravel = {
         baseUrlPage: route('roles.index'),
         addData: route('roles.add'),
         saveData: route('roles.save'),
-        editPage: route('roles.edit')
+        editPage: route('roles.edit'),
+        updateData: route('roles.update'),
     }
 }
 let Roles = {
@@ -71,8 +72,9 @@ let Roles = {
             let params              = {}
             params.roles            = DOMUtil.getValue("#txt-roles-name-edit");
             params.keterangan       = DOMUtil.getValue("#txt-keterangan-edit"); 
-            const url_save          = Laravel.routes.saveData
-            const postData          = AjaxProcess.ajaxRequest(url_save,params,'POST',function(response){
+            params.id               = DOMUtil.getValue("#txt-id");
+            const url_update        = Laravel.routes.updateData
+            const postData          = AjaxProcess.ajaxRequest(url_update,params,'POST',function(response){
                 if(response.is_valid){
                     MessageDialog.showSuccess('Data Succesfully Saved');
                     DOMUtil.clearForm('#frm-rules-edit');
